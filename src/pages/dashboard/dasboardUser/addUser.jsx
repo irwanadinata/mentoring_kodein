@@ -12,6 +12,8 @@ import { addUser } from "@/utils/api/users";
 import { FormMessage } from "@/components/ui/form";
 import LayoutDashboard from "@/components/layout/layoutDashboard";
 import Swal from "sweetalert2";
+import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 const addUserSchema = z.object({
   fullname: z
@@ -55,23 +57,29 @@ function AddUser() {
       const message = await addUser(data);
       Swal.fire({
         title: "Sukses",
-        text: "sukses menambahkan user",
+        text: "sukses menambahkan user" + message,
         icon: "success"
       });
     } catch (error) {
       console.error("Error adding user:", error);
       Swal.fire({
         title: "Error",
-        text: "Gagal menambahkan user",
+        text: "Gagal menambahkan user" + error.message,
         icon: "error"
       });
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <LayoutDashboard>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmitUser)} className="space-y-8">
+          <div className="flex">
+            <ArrowLeft onClick={() => navigate(-1)}/>
+            <h1 className="font-bold text-[18px] ml-4">Tambah User</h1>
+          </div>
           {/* Nama Lengkap */}
           <FormField
             control={form.control}
